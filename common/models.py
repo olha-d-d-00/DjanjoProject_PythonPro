@@ -6,13 +6,29 @@ from django.db import models
 class Subject(models.Model):
     name = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
 class SchoolClass(models.Model):
     start_year = models.IntegerField()
     letter = models.CharField(max_length=1)
 
+    def __str__(self):
+        return f"{self.letter} class {self.start_year}"
+    def __repr__(self):
+        return f"{self.letter} class {self.start_year}"
+
 class StudentClass(models.Model):
     student = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     school_class = models.ForeignKey('SchoolClass', on_delete=models.CASCADE)
+
+    def __repr__(self):
+        return f"{self.student.username} {self.school_class.letter} -> {self.school_class.start_year}"
+    def __str__(self):
+        return f"{self.student.username} {self.school_class.letter} -> {self.school_class.start_year}"
 
 class Contacts(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
@@ -32,9 +48,9 @@ class Files(models.Model):
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
 
 class Grades(models.Model):
-    student = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    student = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='grades_as_student')
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
-    teacher = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    teacher = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='grades_as_teacher')
 
 class StudentHomeWork(models.Model):
     student = models.ForeignKey('auth.User', on_delete=models.CASCADE)

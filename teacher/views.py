@@ -7,7 +7,7 @@ def teacher_page(request):
 def teacher_lessons(request):
     return "ok"
 
-def specific_lesson(request, lesson_id):
+def teacher_specific_lesson(request, lesson_id):
     return f"ok {lesson_id}"
 
 def absence(request, lesson_id):
