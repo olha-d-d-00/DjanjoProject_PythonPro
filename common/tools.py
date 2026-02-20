@@ -11,3 +11,23 @@ def student(func):
         else:
             return func(request, *args, **kwargs)
     return wrapper
+
+
+def teacher(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.groups.filter(name="Teacher").exists():
+            raise PermissionDenied
+        else:
+            return func(request, *args, **kwargs)
+    return wrapper
+
+
+def parent(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.groups.filter(name="Parent").exists():
+            raise PermissionDenied
+        else:
+            return func(request, *args, **kwargs)
+    return wrapper
