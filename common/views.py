@@ -32,8 +32,9 @@ def register(request):
         return render(request, "register.html")
 
 
+@login_required(login_url="login")
 def logout(request):
-    logout(request)
+    auth.logout(request)
     return redirect("login")
 
 @login_required(login_url="login")
