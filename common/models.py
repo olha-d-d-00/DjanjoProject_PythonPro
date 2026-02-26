@@ -32,7 +32,10 @@ class StudentClass(models.Model):
 
 class Contacts(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    photo = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.user.username}"
 
 class Lesson(models.Model):
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE)
@@ -43,6 +46,10 @@ class Lesson(models.Model):
     home_work = models.TextField()
     school_class = models.ForeignKey('SchoolClass', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.subject} - {self.lesson_name} {self.lesson_date}; {self.teacher} -> {self.school_class}"
+
+
 class Files(models.Model):
     file_path = models.FileField(upload_to='files/')
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
@@ -52,12 +59,22 @@ class Grades(models.Model):
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
     teacher = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='grades_as_teacher')
 
+    def __str__(self):
+        return f"{self.student} - {self.lesson} - {self.teacher}"
+
+
 class StudentHomeWork(models.Model):
     student = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
     text_data = models.TextField()
     grade = models.ForeignKey('Grades', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.student} - {self.lesson} - {self.grade}"
+
 class LessonVisits(models.Model):
     student = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.student} - {self.lesson}"
